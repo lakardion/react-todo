@@ -24,12 +24,12 @@ const TodoList = () => {
     dispatch(deleteTodo(todoId));
   };
   const handleEditTodo = (todoId) => (todo) => {
-    console.log("handleEditTodo", todo);
     dispatch(updateTodo(todoId, todo));
   };
   useEffect(() => {
     dispatch(fetchTodos());
   }, [dispatch]);
+
   return (
     <>
       <div className="d-flex justify-content-center flex-column align-items-center">
@@ -40,19 +40,28 @@ const TodoList = () => {
             createTodo={handleCreateTodo}
           />
         )}
-        {todos.map((todo) => (
-          <Todo
-            description={todo.description}
-            details={todo.details}
-            dueDate={todo.dueDate}
-            createdOn={new Date(todo.createdOn)}
-            updatedOn={new Date(todo.updatedOn)}
-            key={`todo-item-${todo.id}`}
-            editTodo={handleEditTodo(todo.id)}
-            deleteTodo={handleDeleteTodo(todo.id)}
-          />
-        ))}
+        {todos
+          .sort((a, b) => (new Date(a.dueDate) < new Date(b.dueDate) ? -1 : 1))
+          .map((todo) => (
+            <Todo
+              description={todo.description}
+              details={todo.details}
+              dueDate={todo.dueDate}
+              createdOn={new Date(todo.createdOn)}
+              updatedOn={new Date(todo.updatedOn)}
+              key={`todo-item-${todo.id}`}
+              editTodo={handleEditTodo(todo.id)}
+              deleteTodo={handleDeleteTodo(todo.id)}
+            />
+          ))}
       </div>
+      {!todos?.length && !isCreatingATodo && (
+        <div className="flex-grow-1 align-items-center d-flex h-100 justify-content-center">
+          <em>
+            Everyone has something to do, start adding with the plus button!
+          </em>
+        </div>
+      )}
       <Fab
         color="primary"
         className="fab"

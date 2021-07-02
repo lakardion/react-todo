@@ -34,7 +34,19 @@ const Todo = (props) => {
     }
   };
   return (
-    <div className={`m-3 p-3 border rounded ${classes.todoCard}`}>
+    <div
+      className={`m-3 p-3 border rounded position-relative ${classes.todoCard}`}
+    >
+      {!!props.createdOn && (
+        <div
+          className={`w-100 d-flex pr-1 justify-content-end ${classes.timeStampDiv}`}
+          title={`Last updated: ${getDateTimeString(props.updatedOn)}`}
+        >
+          <span className={classes.timeStamp}>
+            {getDateTimeString(props.createdOn)}
+          </span>
+        </div>
+      )}
       <Grid container item spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -85,33 +97,35 @@ const Todo = (props) => {
         <Grid item xs={3}>
           <div className="d-flex align-items-end justify-content-center w-100 h-100">
             {isEditing || isBeingCreated ? (
-              <Button onClick={handleTodoEditCreate}>
-                <DoneIcon />
-              </Button>
+              <>
+                <Button onClick={handleTodoEditCreate}>
+                  <DoneIcon />
+                </Button>
+                <Button
+                  onClick={
+                    isEditing
+                      ? () => {
+                          console.log("rollback changes");
+                          setIsEditing(false);
+                        }
+                      : props.handleCancelCreation
+                  }
+                >
+                  <ClearIcon />
+                </Button>
+              </>
             ) : (
-              <Button onClick={() => setIsEditing(true)}>
-                <CreateIcon />
-              </Button>
-            )}
-            {!isBeingCreated ? (
-              <Button>
-                <DeleteIcon onClick={props.deleteTodo} />
-              </Button>
-            ) : (
-              <Button>
-                <ClearIcon onClick={props.handleCancelCreation} />
-              </Button>
+              <>
+                <Button onClick={() => setIsEditing(true)}>
+                  <CreateIcon />
+                </Button>
+                <Button onClick={props.deleteTodo}>
+                  <DeleteIcon />
+                </Button>
+              </>
             )}
           </div>
         </Grid>
-        {!!props.createdOn && (
-          <span
-            className={classes.timeStamp}
-            title={`Last updated: ${getDateTimeString(props.updatedOn)}`}
-          >
-            {getDateTimeString(props.createdOn)}
-          </span>
-        )}
       </Grid>
     </div>
   );

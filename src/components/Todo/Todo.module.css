@@ -3,8 +3,9 @@
 }
 
 .timeStamp {
-  position: relative;
-  bottom: 0.5rem;
-  left: 1rem;
   color: gray;
+}
+.timeStampDiv {
+  position: absolute;
+  right: 1rem;
 }
