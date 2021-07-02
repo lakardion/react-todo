@@ -5,11 +5,11 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 import TodoApp from "./TodoApp";
 import { Provider } from "react-redux";
-import store from "./store/store";
+import getStore from "./store/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={getStore()}>
       <TodoApp />
     </Provider>
   </React.StrictMode>,

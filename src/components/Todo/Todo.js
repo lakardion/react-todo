@@ -10,9 +10,9 @@ import { getDateTimeString } from "../../Utils/DateUtils";
 const Todo = (props) => {
   const [isBeingCreated, setIsBeingCreated] = useState(props.isBeingCreated);
   const [isEditing, setIsEditing] = useState(false);
-  const [description, setDescription] = useState(props.description ?? '');
-  const [details, setDetails] = useState(props.details ?? '');
-  const [dueDate, setDueDate] = useState(props.dueDate ?? '');
+  const [description, setDescription] = useState(props.description ?? "");
+  const [details, setDetails] = useState(props.details ?? "");
+  const [dueDate, setDueDate] = useState(props.dueDate ?? "");
 
   const handleTodoEditCreate = () => {
     const currentTodo = {
@@ -30,7 +30,7 @@ const Todo = (props) => {
       setIsBeingCreated(false);
     } else {
       setIsEditing(false);
-      props.editTodo(props.todoId, { ...currentTodo, updatedOn: new Date() });
+      props.editTodo({ ...currentTodo, updatedOn: new Date() });
     }
   };
   return (
@@ -85,22 +85,32 @@ const Todo = (props) => {
         <Grid item xs={3}>
           <div className="d-flex align-items-end justify-content-center w-100 h-100">
             {isEditing || isBeingCreated ? (
-              <Button onClick={handleTodoEditCreate}>
-                <DoneIcon />
-              </Button>
+              <>
+                <Button onClick={handleTodoEditCreate}>
+                  <DoneIcon />
+                </Button>
+                <Button
+                  onClick={
+                    isEditing
+                      ? () => {
+                          console.log("rollback changes");
+                          setIsEditing(false);
+                        }
+                      : props.handleCancelCreation
+                  }
+                >
+                  <ClearIcon />
+                </Button>
+              </>
             ) : (
-              <Button onClick={() => setIsEditing(true)}>
-                <CreateIcon />
-              </Button>
-            )}
-            {!isBeingCreated ? (
-              <Button>
-                <DeleteIcon onClick={props.deleteTodo} />
-              </Button>
-            ) : (
-              <Button>
-                <ClearIcon onClick={props.handleCancelCreation} />
-              </Button>
+              <>
+                <Button onClick={() => setIsEditing(true)}>
+                  <CreateIcon />
+                </Button>
+                <Button onClick={props.deleteTodo}>
+                  <DeleteIcon />
+                </Button>
+              </>
             )}
           </div>
         </Grid>

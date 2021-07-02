@@ -1,28 +1,24 @@
 import {
-  ADD_TODO,
-  DELETE_TODO,
-  REFRESH_TODOS,
-  UPDATE_TODO,
+  CREATE_TODO_SUCCESS,
+  DELETE_TODO_SUCCESS,
+  FETCH_TODOS_SUCCESS,
+  UPDATE_TODO_SUCCESS,
 } from "../actions/todo/actionTypes";
 
 const initialState = [];
-const findIndexByTodoId = (list, id) =>
-  list.findIndex((td) => td.todoId === id);
+const findIndexByTodoId = (list, id) => list.findIndex((td) => td.id === id);
 const todoReducer = (state = initialState, action) => {
   const stateCopy = [...state];
   switch (action.type) {
-    case UPDATE_TODO:
-      const updatedTodoIdx = findIndexByTodoId(
-        stateCopy,
-        action.payload.todoId
-      );
+    case UPDATE_TODO_SUCCESS:
+      const updatedTodoIdx = findIndexByTodoId(stateCopy, action.payload.id);
       stateCopy[updatedTodoIdx] = action.payload.todo;
       return stateCopy;
-    case REFRESH_TODOS:
+    case FETCH_TODOS_SUCCESS:
       return action.payload;
-    case DELETE_TODO:
-      return stateCopy.filter((td) => td.todoId !== action.payload);
-    case ADD_TODO:
+    case DELETE_TODO_SUCCESS:
+      return stateCopy.filter((td) => td.id !== action.payload);
+    case CREATE_TODO_SUCCESS:
       return stateCopy.concat(action.payload);
     default:
       return state;
