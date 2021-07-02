@@ -1,0 +1,10 @@
+.todoCard {
+  max-width: 50%;
+}
+
+.timeStamp {
+  position: relative;
+  bottom: 0.5rem;
+  left: 1rem;
+  color: gray;
+}
