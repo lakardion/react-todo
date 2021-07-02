@@ -10,9 +10,9 @@ import { getDateTimeString } from "../../Utils/DateUtils";
 const Todo = (props) => {
   const [isBeingCreated, setIsBeingCreated] = useState(props.isBeingCreated);
   const [isEditing, setIsEditing] = useState(false);
-  const [description, setDescription] = useState(props.description ?? '');
-  const [details, setDetails] = useState(props.details ?? '');
-  const [dueDate, setDueDate] = useState(props.dueDate ?? '');
+  const [description, setDescription] = useState(props.description ?? "");
+  const [details, setDetails] = useState(props.details ?? "");
+  const [dueDate, setDueDate] = useState(props.dueDate ?? "");
 
   const handleTodoEditCreate = () => {
     const currentTodo = {
@@ -30,7 +30,7 @@ const Todo = (props) => {
       setIsBeingCreated(false);
     } else {
       setIsEditing(false);
-      props.editTodo(props.todoId, { ...currentTodo, updatedOn: new Date() });
+      props.editTodo({ ...currentTodo, updatedOn: new Date() });
     }
   };
   return (

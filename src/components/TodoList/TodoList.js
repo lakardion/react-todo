@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Todo from "../Todo/Todo";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -7,18 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createTodo,
   deleteTodo,
+  fetchTodos,
   updateTodo,
 } from "../../store/actions/todo/actions";
-const customTodos = [
-  {
-    description: "SomeDescription",
-    details: "Some details",
-    dueDate: new Date(),
-    todoId: 1,
-    createdOn: new Date(),
-    updatedOn: new Date(),
-  },
-];
+
 const TodoList = () => {
   const [isCreatingATodo, setIsCreatingATodo] = useState(false);
   const todos = useSelector((x) => x.todos);
@@ -26,13 +18,18 @@ const TodoList = () => {
   const dispatch = useDispatch();
   const handleCreateTodo = (todo) => {
     dispatch(createTodo(todo));
+    setIsCreatingATodo(false);
   };
   const handleDeleteTodo = (todoId) => () => {
     dispatch(deleteTodo(todoId));
   };
   const handleEditTodo = (todoId) => (todo) => {
+    console.log("handleEditTodo", todo);
     dispatch(updateTodo(todoId, todo));
   };
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
   return (
     <>
       <div className="d-flex justify-content-center flex-column align-items-center">
@@ -48,11 +45,11 @@ const TodoList = () => {
             description={todo.description}
             details={todo.details}
             dueDate={todo.dueDate}
-            createdOn={todo.createdOn}
-            updatedOn={todo.updatedOn}
-            key={`todo-item-${todo.todoId}`}
-            editTodo={handleEditTodo(todo.todoId)}
-            deleteTodo={handleDeleteTodo(todo.todoId)}
+            createdOn={new Date(todo.createdOn)}
+            updatedOn={new Date(todo.updatedOn)}
+            key={`todo-item-${todo.id}`}
+            editTodo={handleEditTodo(todo.id)}
+            deleteTodo={handleDeleteTodo(todo.id)}
           />
         ))}
       </div>
